@@ -55,8 +55,8 @@ class PacmanGame(GameApp):
         self.pacman1 = Pacman(self, self.maze, 1, 1)
         self.pacman2 = Pacman(self, self.maze, self.maze.get_height() - 2, self.maze.get_width() - 2)
 
-        self.pacman1_score = Text(self, 'P1: 0', 100, 20)
-        self.pacman2_score = Text(self, 'P2: 0', 600, 20)
+        self.pacman1_score_text = Text(self, 'P1: 0', 100, 20)
+        self.pacman2_score_text = Text(self, 'P2: 0', 600, 20)
 
         self.elements.append(self.pacman1)
         self.elements.append(self.pacman2)

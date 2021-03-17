@@ -1,4 +1,5 @@
 from gamelib import Sprite
+from dir_consts import *
 
 class Dot(Sprite):
     def __init__(self, app, x, y):
@@ -99,6 +100,15 @@ class Maze:
         dot.get_eaten()
 
         self.has_active_dots[(r,c)] = False
+
+    def is_movable_direction(self, r, c, direction):
+        nr = r + DIR_RC_OFFSET[direction][0]
+        nc = c + DIR_RC_OFFSET[direction][1]
+
+        if (nc < 0) or (nr < 0) or (nc >= self.get_width()) or (nr >= self.get_height()):
+            return False
+
+        return not self.has_wall_at(nr, nc)
 
     def get_height(self):
         return len(Maze.MAP)

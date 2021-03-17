@@ -2,27 +2,13 @@ import tkinter as tk
 
 from gamelib import Sprite, GameApp, Text
 
+from dir_consts import *
 from maze import Maze
 
 CANVAS_WIDTH = 800
 CANVAS_HEIGHT = 600
 
 UPDATE_DELAY = 33
-
-DIR_STILL = 0
-DIR_CONTINUE = -1
-DIR_UP = 1
-DIR_RIGHT = 2
-DIR_DOWN = 3
-DIR_LEFT = 4
-
-DIR_OFFSET = {
-    DIR_STILL: (0,0),
-    DIR_UP: (0,-1),
-    DIR_RIGHT: (1, 0),
-    DIR_DOWN: (0, 1),
-    DIR_LEFT: (-1, 0),
-}
 
 PACMAN_SPEED = 5
 
@@ -45,7 +31,10 @@ class Pacman(Sprite):
             if self.maze.has_dot_at(r, c):
                 self.maze.eat_dot_at(r, c)
             
-            self.direction = self.next_direction
+            if self.maze.is_movable_direction(r, c, self.next_direction):
+                self.direction = self.next_direction
+            else:
+                self.direction = DIR_STILL
 
         self.x += PACMAN_SPEED * DIR_OFFSET[self.direction][0]
         self.y += PACMAN_SPEED * DIR_OFFSET[self.direction][1]

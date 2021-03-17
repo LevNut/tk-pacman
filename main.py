@@ -44,12 +44,7 @@ class Pacman(Sprite):
 
 
 class PacmanGame(GameApp):
-    def create_sprites(self):
-        pass
-
     def init_game(self):
-        self.create_sprites()
-
         self.maze = Maze(self, CANVAS_WIDTH, CANVAS_HEIGHT)
 
         self.pacman1 = Pacman(self, self.maze, 1, 1)

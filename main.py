@@ -72,11 +72,6 @@ class PacmanGame(GameApp):
             #   - add all other commands to the command_map
         }
 
-    def on_key_pressed(self, event):
-        ch = event.char.upper()
-
-        # TODO:
-        #   - check if ch is in self.command_map, if it is in the map, call the function.
 
     def get_pacman_next_direction_function(self, pacman, next_direction):
 
@@ -92,6 +87,9 @@ class PacmanGame(GameApp):
         pass
 
     def on_key_pressed(self, event):
+        ch = event.char.upper()
+        if ch in self.command_map:
+            self.command_map
         if event.char.upper() == 'A':
             self.pacman1.set_next_direction(DIR_LEFT)
         elif event.char.upper() == 'W':
@@ -109,6 +107,10 @@ class PacmanGame(GameApp):
             self.pacman2.set_next_direction(DIR_DOWN)
         elif event.char.upper() == 'L':
             self.pacman2.set_next_direction(DIR_RIGHT)
+
+
+        # TODO:
+        #   - check if ch is in self.command_map, if it is in the map, call the function.
 
 
 if __name__ == "__main__":

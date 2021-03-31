@@ -63,10 +63,10 @@ class PacmanGame(GameApp):
             'S': self.get_pacman_next_direction_function(self.pacman1, DIR_DOWN),
             'D': self.get_pacman_next_direction_function(self.pacman1, DIR_RIGHT),
 
-            'I': self.get_pacman_next_direction_function(self.pacman1, DIR_UP),
-            'J': self.get_pacman_next_direction_function(self.pacman1, DIR_LEFT),
-            'K': self.get_pacman_next_direction_function(self.pacman1, DIR_DOWN),
-            'L': self.get_pacman_next_direction_function(self.pacman1, DIR_RIGHT),
+            'I': self.get_pacman_next_direction_function(self.pacman2, DIR_UP),
+            'J': self.get_pacman_next_direction_function(self.pacman2, DIR_LEFT),
+            'K': self.get_pacman_next_direction_function(self.pacman2, DIR_DOWN),
+            'L': self.get_pacman_next_direction_function(self.pacman2, DIR_RIGHT),
 
             # TODO:
             #   - add all other commands to the command_map

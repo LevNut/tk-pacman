@@ -89,7 +89,7 @@ class PacmanGame(GameApp):
     def on_key_pressed(self, event):
         ch = event.char.upper()
         if ch in self.command_map:
-            self.command_map
+            self.command_map[ch]()
         if event.char.upper() == 'A':
             self.pacman1.set_next_direction(DIR_LEFT)
         elif event.char.upper() == 'W':

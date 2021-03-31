@@ -5,6 +5,8 @@ from gamelib import Sprite, GameApp, Text
 from dir_consts import *
 from maze import Maze
 
+import random
+
 CANVAS_WIDTH = 800
 CANVAS_HEIGHT = 600
 
@@ -24,6 +26,8 @@ class Pacman(Sprite):
 
         x, y = maze.piece_center(r, c)
         super().__init__(app, 'images/pacman.png', x, y)
+        self.is_super_speed = False
+        self.super_speed_counter = 0
 
     def update(self):
         if self.maze.is_at_center(self.x, self.y):
@@ -31,14 +35,27 @@ class Pacman(Sprite):
 
             if self.maze.has_dot_at(r, c):
                 self.maze.eat_dot_at(r, c)
+                if random.random() < 0.1:
+                    if not self.is_super_speed:
+                        self.is_super_speed = True
+                        self.super_speed_counter = 0
 
             if self.maze.is_movable_direction(r, c, self.next_direction):
                 self.direction = self.next_direction
             else:
                 self.direction = DIR_STILL
 
-        self.x += PACMAN_SPEED * DIR_OFFSET[self.direction][0]
-        self.y += PACMAN_SPEED * DIR_OFFSET[self.direction][1]
+
+        if self.is_super_speed:
+            speed = 2 * PACMAN_SPEED
+            self.super_speed_counter += 1
+            if self.super_speed_counter > 50:
+                self.is_super_speed = False
+        else:
+            speed = PACMAN_SPEED
+
+        self.x += speed * DIR_OFFSET[self.direction][0]
+        self.y += speed * DIR_OFFSET[self.direction][1]
 
     def set_next_direction(self, direction):
         self.next_direction = direction

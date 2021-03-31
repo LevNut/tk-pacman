@@ -29,6 +29,8 @@ class Pacman(Sprite):
         self.is_super_speed = False
         self.super_speed_counter = 0
 
+        self.state = NormalPacmanState(self)
+
     def update(self):
         if self.maze.is_at_center(self.x, self.y):
             r, c = self.maze.xy_to_rc(self.x, self.y)
@@ -39,6 +41,10 @@ class Pacman(Sprite):
                     if not self.is_super_speed:
                         self.is_super_speed = True
                         self.super_speed_counter = 0
+
+            ## Notes: 1st operation
+            ##
+            self.state.random_upgrade()
 
             if self.maze.is_movable_direction(r, c, self.next_direction):
                 self.direction = self.next_direction
@@ -56,6 +62,10 @@ class Pacman(Sprite):
 
         self.x += speed * DIR_OFFSET[self.direction][0]
         self.y += speed * DIR_OFFSET[self.direction][1]
+
+        ## Notes: 2nd operation
+        ##
+        self.state.move_pacman()
 
     def set_next_direction(self, direction):
         self.next_direction = direction
@@ -128,6 +138,44 @@ class PacmanGame(GameApp):
 
         # TODO:
         #   - check if ch is in self.command_map, if it is in the map, call the function.
+
+
+class NormalPacmanState:
+    def __init__(self, pacman):
+        self.pacman = pacman
+
+    def random_upgrade(self):
+        if random.random() < 0.1:
+            self.pacman.state = SuperPacmanState(self.pacman)
+
+    def move_pacman(self):
+        # TODO:
+        #   - update the pacman's location with normal speed
+        self.pacman.y += PACMAN_SPEED * DIR_OFFSET[self.pacman.direction][1]
+        self.pacman.x += PACMAN_SPEED * DIR_OFFSET[self.pacman.direction][0]
+
+
+
+class SuperPacmanState:
+    def __init__(self, pacman):
+        self.pacman = pacman
+        self.counter = 0
+
+    def random_upgrade(self):
+        pass
+
+    def move_pacman(self):
+        fast = PACMAN_SPEED * 2
+        # TODO:
+        #   - update the pacman's location with super speed
+        #   - update the counter, if the counter >= 50, set state back to NormalPacmanState
+
+        self.counter += 1
+        if self.counter >= 50:
+            self.pacman.state = NormalPacmanState(self.pacman)
+        self.pacman.y += DIR_OFFSET[self.pacman.direction][1] * fast
+        self.pacman.x += DIR_OFFSET[self.pacman.direction][0] * fast
+
 
 
 if __name__ == "__main__":

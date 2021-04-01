@@ -28,8 +28,6 @@ class Pacman(Sprite):
 
         x, y = maze.piece_center(r, c)
         super().__init__(app, 'images/pacman.png', x, y)
-        # self.is_super_speed = False
-        # self.super_speed_counter = 0
 
         self.state = NormalPacmanState(self)
 
@@ -40,36 +38,18 @@ class Pacman(Sprite):
             if self.maze.has_dot_at(r, c):
                 self.maze.eat_dot_at(r, c)
 
-                # if random.random() < 0.1:
-                #     if not self.is_super_speed:
-                #         self.is_super_speed = True
-                #         self.super_speed_counter = 0
+                for i in self.dot_eaten_observers:
+                    i()
 
             # # Notes: 1st operation
             # #
             self.state.random_upgrade()  # # Therefore, we would encapsulate both operations in the state, and change
             # update to:
 
-
-                for i in self.dot_eaten_observers:
-                    i()
-
-
             if self.maze.is_movable_direction(r, c, self.next_direction):
                 self.direction = self.next_direction
             else:
                 self.direction = DIR_STILL
-
-        # if self.is_super_speed:
-        #     speed = 2 * PACMAN_SPEED
-        #     self.super_speed_counter += 1
-        #     if self.super_speed_counter > 50:
-        #         self.is_super_speed = False
-        # else:
-        #     speed = PACMAN_SPEED
-        #
-        # self.x += speed * DIR_OFFSET[self.direction][0]
-        # self.y += speed * DIR_OFFSET[self.direction][1]
 
         # # Notes: 2nd operation
         # #
@@ -93,8 +73,8 @@ class PacmanGame(GameApp):
         self.elements.append(self.pacman1)
         self.elements.append(self.pacman2)
 
-
         self.command_map = {
+
             'W': self.get_pacman_next_direction_function(self.pacman1, DIR_UP),
             'A': self.get_pacman_next_direction_function(self.pacman1, DIR_LEFT),
             'S': self.get_pacman_next_direction_function(self.pacman1, DIR_DOWN),
@@ -105,9 +85,13 @@ class PacmanGame(GameApp):
             'K': self.get_pacman_next_direction_function(self.pacman2, DIR_DOWN),
             'L': self.get_pacman_next_direction_function(self.pacman2, DIR_RIGHT),
 
-            # TODO:
-            #   - add all other commands to the command_map
         }
+
+        self.pacman1_score = 0
+        self.pacman2_score = 0
+
+        self.pacman1.dot_eaten_observers.append(self.dot_eaten_by_pacman1)
+        self.pacman2.dot_eaten_observers.append(self.dot_eaten_by_pacman2)
 
     def get_pacman_next_direction_function(self, pacman, next_direction):
 
@@ -116,16 +100,9 @@ class PacmanGame(GameApp):
 
         return f
 
-        self.pacman1_score = 0
-        self.pacman2_score = 0
-
-        self.pacman1.dot_eaten_observers.append(self.dot_eaten_by_pacman1)
-        self.pacman2.dot_eaten_observers.append(self.dot_eaten_by_pacman2)
-
     def update_score(self):
         self.pacman1_score_text.set_text(f'P1: {self.pacman1_score}')
         self.pacman2_score_text.set_text(f'P2: {self.pacman2_score}')
-
 
     def pre_update(self):
         pass
@@ -155,6 +132,13 @@ class PacmanGame(GameApp):
         elif event.char.upper() == 'L':
             self.pacman2.set_next_direction(DIR_RIGHT)
 
+    def dot_eaten_by_pacman1(self):
+        self.pacman1_score += 1
+        self.update_score()
+
+    def dot_eaten_by_pacman2(self):
+        self.pacman2_score += 1
+        self.update_score()
 
 
 class NormalPacmanState:
@@ -187,14 +171,6 @@ class SuperPacmanState:
             self.pacman.state = NormalPacmanState(self.pacman)
         self.pacman.y += DIR_OFFSET[self.pacman.direction][1] * fast
         self.pacman.x += DIR_OFFSET[self.pacman.direction][0] * fast
-
-    def dot_eaten_by_pacman1(self):
-        self.pacman1_score += 1
-        self.update_score()
-
-    def dot_eaten_by_pacman2(self):
-        self.pacman2_score += 1
-        self.update_score()
 
 
 if __name__ == "__main__":

@@ -42,9 +42,9 @@ class Pacman(Sprite):
                 #         self.is_super_speed = True
                 #         self.super_speed_counter = 0
 
-            ## Notes: 1st operation
-            ##
-            self.state.random_upgrade()  ## Therefore, we would encapsulate both operations in the state, and change
+            # # Notes: 1st operation
+            # #
+            self.state.random_upgrade()  # # Therefore, we would encapsulate both operations in the state, and change
             # update to:
 
             if self.maze.is_movable_direction(r, c, self.next_direction):
@@ -63,9 +63,9 @@ class Pacman(Sprite):
         # self.x += speed * DIR_OFFSET[self.direction][0]
         # self.y += speed * DIR_OFFSET[self.direction][1]
 
-        ## Notes: 2nd operation
-        ##
-        self.state.move_pacman()  ## Therefore, we would encapsulate both operations in the state, and change
+        # # Notes: 2nd operation
+        # #
+        self.state.move_pacman()  # # Therefore, we would encapsulate both operations in the state, and change
         # update to:
 
     def set_next_direction(self, direction):
